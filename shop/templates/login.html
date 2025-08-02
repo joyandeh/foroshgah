@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <!-- Header-->
+        <header class="bg-dark py-5">
+            <div class="container px-4 px-lg-5 my-5">
+                <div class="text-center text-white">
+                    <h1 class="display-4 fw-bolder">ثبت نام</h1>
+                    <p class="lead fw-normal text-white-50 mb-0"> </p>
+                </div>
+            </div>
+        </header>
+<br>
+<div class="container">
+    <div class=" row">
+        <center>
+            <div class="col-8">
+                <p align= justify>
+                    <form method="POST" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                          <label for="text" class="form-label">username</label>
+                          <input type="text" class="form-control" name="username" ">
+                          <div id="emailHelp" class="form-text">.</div>
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input type="password" class="form-control" name="password"">
+                        </div>
+                       
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                      </form>
+                </p>
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <!-- Header-->
+        
+<br>
+<div class="container">
+    <div class=" row">
+        <center>
+            <div class="col-8">
+                <h3>سفارشات جاری</h3>
+                {% if other %}
+                <table class="table">
+                    <thead>
+                      <tr class="table-dark">
+                        <th scope="col">شماره سفارش</th>
+                        <th scope="col">به نام </th>
+                        <th scope="col">تاریخ ثبت </th>
+                        <th scope="col">وضعیت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in other %}
+                      <tr>
+                        <th scope="row"><a href="{% url 'orders_details' order.id %}">شماره {{order.id}}</a></th>
+                        <td>{{order.full_name}}</td>
+                        <td>{{order.date_ordered|date:"Y-m-d H:i:s"}}</td>
+                        <td>{{order.get_status_display}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                سفارشی در جریان نیست
+                {% endif %}
+<br><hr><br>
+                {% if delivered %}
+                <table class="table">
+                    <thead>
+                      <tr class="table-dark">
+                        <th scope="col">شماره سفارش</th>
+                        <th scope="col">به نام </th>
+                        <th scope="col">تاریخ  تحویل </th>
+                        <th scope="col">وضعیت</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in delivered %}
+                      <tr>
+                        <th scope="row"><a href="{% url 'orders_details' order.id %}"> شماره{{order.id}}</a></th>
+                        <td>{{order.full_name}}</td>
+                        <td>{{order.last_update}}</td>
+                        <td>{{order.get_status_display}}</td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                سفارشی در جریان نیست
+                {% endif %}
+
+            </div>
+        </center>
+    </div>
+</div>
+{% endblock %}

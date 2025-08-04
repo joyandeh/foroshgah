@@ -2,87 +2,343 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">آنلاین شاپه</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">اینجا یک آنلاین شاپه</p>
+        <!-- Hero Section -->
+        <section class="hero-section py-5">
+            <div class="container px-4 px-lg-5">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 text-center text-lg-start">
+                        <h1 class="display-4 fw-bold text-white mb-4">
+                            <span class="gradient-text">مجسمه</span>
+                            <br>فروشگاه آنلاین شما
+                        </h1>
+                        <p class="lead text-white-50 mb-4">
+                            بهترین محصولات با بهترین قیمت‌ها در دسترس شما
+                        </p>
+                        <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
+                            <a href="{% url 'category_summary' %}" class="btn btn-light btn-lg px-4">
+                                <i class="bi bi-grid me-2"></i>مشاهده محصولات
+                            </a>
+                            <a href="{% url 'search' %}" class="btn btn-outline-light btn-lg px-4">
+                                <i class="bi bi-search me-2"></i>جستجو
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 text-center mt-5 mt-lg-0">
+                        <div class="hero-image">
+                            <i class="bi bi-shop display-1 text-white opacity-25"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </header>
-        <!-- Section-->
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
+        </section>
+
+        <!-- Products Section -->
+        <section class="py-5 bg-white">
+            <div class="container px-4 px-lg-5">
+                <div class="row mb-4">
+                    <div class="col-12 text-center">
+                        <h2 class="fw-bold mb-3">
+                            <i class="bi bi-star-fill text-warning me-2"></i>
+                            محصولات ویژه
+                        </h2>
+                        <p class="text-muted">بهترین محصولات انتخاب شده برای شما</p>
+                    </div>
+                </div>
+                
                 <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
                     {% for item in products %}
                     {% if item.is_sale %}
                     <div class="col mb-5">
-                        <div class="card h-100">
+                        <div class="card h-100 product-card sale-card">
                             <!-- Sale badge-->
-                            <div class="badge bg-dark text-white position-absolute" style="top: 0.5rem; right: 0.5rem">Sale</div>
+                            <div class="sale-badge">
+                                <span class="badge bg-danger text-white">تخفیف ویژه</span>
+                            </div>
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ item.picture.url }}" alt="..." />
+                            <div class="product-image-container">
+                                <img class="card-img-top product-image" src="{{ item.picture.url }}" alt="{{ item.name }}" />
+                                <div class="product-overlay">
+                                    <a href="{% url 'product' item.id %}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye me-1"></i>مشاهده
+                                    </a>
+                                </div>
+                            </div>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ item.name }}</h5>
+                                    <h5 class="fw-bolder product-title">{{ item.name }}</h5>
 
+                                    <!-- Rating stars -->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         {% with ''|center:item.star as range %}
                                         {% for _ in range %}
-                                        <div class="bi-star-fill"></div>
+                                        <i class="bi bi-star-fill"></i>
                                         {% endfor %}
                                         {% endwith %}
-                                       
                                     </div>
+                                    
                                     <!-- Product price-->
-                                    <strike>{{ item.price | intcomma }} تومان </strike><br>
-                                    {{ item.sale_price | intcomma }} تومان 
+                                    <div class="price-container">
+                                        <span class="original-price">{{ item.price | intcomma }} تومان</span>
+                                        <span class="sale-price">{{ item.sale_price | intcomma }} تومان</span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' item.id %}">View options</a></div>
+                                <div class="text-center">
+                                    <a class="btn btn-outline-primary mt-auto w-100" href="{% url 'product' item.id %}">
+                                        <i class="bi bi-cart-plus me-2"></i>افزودن به سبد
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% else %}
                     <div class="col mb-5">
-                        <div class="card h-100">
-                            
+                        <div class="card h-100 product-card">
                             <!-- Product image-->
-                            <img class="card-img-top" src="{{ item.picture.url }}" alt="..." />
+                            <div class="product-image-container">
+                                <img class="card-img-top product-image" src="{{ item.picture.url }}" alt="{{ item.name }}" />
+                                <div class="product-overlay">
+                                    <a href="{% url 'product' item.id %}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye me-1"></i>مشاهده
+                                    </a>
+                                </div>
+                            </div>
                             <!-- Product details-->
                             <div class="card-body p-4">
                                 <div class="text-center">
                                     <!-- Product name-->
-                                    <h5 class="fw-bolder">{{ item.name }}</h5>
+                                    <h5 class="fw-bolder product-title">{{ item.name }}</h5>
+                                    
+                                    <!-- Rating stars -->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
                                         {% with ''|center:item.star as range %}
                                         {% for _ in range %}
-                                        <div class="bi-star-fill"></div>
+                                        <i class="bi bi-star-fill"></i>
                                         {% endfor %}
                                         {% endwith %}
-                                       
                                     </div>
                                     
                                     <!-- Product price-->
-                                    {{ item.price | intcomma }} تومان
+                                    <div class="price-container">
+                                        <span class="current-price">{{ item.price | intcomma }} تومان</span>
+                                    </div>
                                 </div>
                             </div>
                             <!-- Product actions-->
                             <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <div class="text-center"><a class="btn btn-outline-dark mt-auto" href="{% url 'product' item.id %}">View options</a></div>
+                                <div class="text-center">
+                                    <a class="btn btn-outline-primary mt-auto w-100" href="{% url 'product' item.id %}">
+                                        <i class="bi bi-cart-plus me-2"></i>افزودن به سبد
+                                    </a>
+                                </div>
                             </div>
                         </div>
                     </div>
                     {% endif %}
                     {% endfor %}
-                    
                 </div>
             </div>
         </section>
- 
+
+        <!-- Features Section -->
+        <section class="py-5 bg-light">
+            <div class="container px-4 px-lg-5">
+                <div class="row g-4">
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card p-4">
+                            <i class="bi bi-truck display-4 text-primary mb-3"></i>
+                            <h5 class="fw-bold">ارسال رایگان</h5>
+                            <p class="text-muted">برای خریدهای بالای 500 هزار تومان</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card p-4">
+                            <i class="bi bi-shield-check display-4 text-success mb-3"></i>
+                            <h5 class="fw-bold">ضمانت اصالت</h5>
+                            <p class="text-muted">تمام محصولات اصل و دارای گارانتی</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <div class="feature-card p-4">
+                            <i class="bi bi-headset display-4 text-info mb-3"></i>
+                            <h5 class="fw-bold">پشتیبانی 24/7</h5>
+                            <p class="text-muted">در تمام ساعات شبانه‌روز در خدمت شما</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .hero-section {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                padding: 6rem 0;
+                margin-top: -80px;
+            }
+            
+            .gradient-text {
+                background: linear-gradient(45deg, #fff, #f8f9fa);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+            
+            .product-card {
+                border: none;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+                transition: all 0.3s ease;
+                overflow: hidden;
+            }
+            
+            .product-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            }
+            
+            .sale-card {
+                border: 2px solid #dc3545;
+            }
+            
+            .product-image-container {
+                position: relative;
+                overflow: hidden;
+            }
+            
+            .product-image {
+                transition: transform 0.3s ease;
+                height: 200px;
+                object-fit: cover;
+            }
+            
+            .product-card:hover .product-image {
+                transform: scale(1.1);
+            }
+            
+            .product-overlay {
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.7);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .product-card:hover .product-overlay {
+                opacity: 1;
+            }
+            
+            .sale-badge {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                z-index: 10;
+            }
+            
+            .product-title {
+                color: #2c3e50;
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .price-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 0.25rem;
+            }
+            
+            .original-price {
+                text-decoration: line-through;
+                color: #6c757d;
+                font-size: 0.9rem;
+            }
+            
+            .sale-price {
+                color: #dc3545;
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+            
+            .current-price {
+                color: #28a745;
+                font-weight: bold;
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                background: white;
+                border-radius: 15px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+                transition: transform 0.3s ease;
+            }
+            
+            .feature-card:hover {
+                transform: translateY(-5px);
+            }
+            
+            .btn-outline-primary {
+                border-color: #667eea;
+                color: #667eea;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-outline-primary:hover {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                border-color: transparent;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            
+            .btn-primary {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                border: none;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-primary:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            
+            .btn-light {
+                background: rgba(255, 255, 255, 0.9);
+                border: none;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-light:hover {
+                background: white;
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(255, 255, 255, 0.3);
+            }
+            
+            .btn-outline-light {
+                border: 2px solid rgba(255, 255, 255, 0.8);
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            }
+            
+            .btn-outline-light:hover {
+                background: rgba(255, 255, 255, 0.1);
+                border-color: white;
+                transform: translateY(-2px);
+            }
+        </style>
 {% endblock %}

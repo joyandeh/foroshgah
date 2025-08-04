@@ -2,70 +2,109 @@
 {% load static %}
 {% load humanize %}
 {% block content %}
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder"> تایید نهایی</h1>
-                    <p class="lead fw-normal text-white-50 mb-0">لطفا صورت حساب را چک کنید</p>
-                </div>
-            </div>
-        </header>
-<br>
-<div class="container">
-    <div class=" row">
-        <center>
-            <div class="col-8">
-                <div class="card">
-                    <div class="card-header">
-                      خلاصه سفارشات
-                    </div>
-                    <div class="card-body">
-                        {% for product in cart_products %}
-                        {{product.name}}<br>
-                        <small> قیمت:
-                        {% if product.is_sale %}
-                        {{ product.sale_price| intcomma }}
-                        {% else %}
-                        {{ product.price| intcomma }}
-                        {% endif %}
-                        </small><br>
-                        <small>تعداد:
-                        {% for key, value in quantities.items %}
-                        {% if key == product.id|slugify %}
-                        {{ value }}
-                        </small><br><hr>
-                        {% endif %}
-                        {% endfor %}
-                        {% endfor %}
-                        <strong>مجموع کل سفارشات: {{total | intcomma}}</strong><br>
-                        <!-- <a href="{% url 'cart_summary' %}" class="btn btn-sm btn-outline-primary">edit</a> -->
+<!-- Header-->
+<section class="bg-dark py-5 mb-4">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">تایید نهایی</h1>
+            <p class="lead fw-normal text-white-50 mb-0">لطفا صورت حساب را چک کنید</p>
+        </div>
+    </div>
+</section>
 
-                      
-                    </div>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-primary text-white fw-bold">
+                    <i class="bi bi-bag-check me-2"></i>خلاصه سفارشات
                 </div>
-                <br>
-                <div class="card">
-                    <div class="card-header">
-                       مشخصات ارسال 
+                <div class="card-body">
+                    {% for product in cart_products %}
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <div>
+                            <span class="fw-bold">{{ product.name }}</span>
+                            <br>
+                            <small class="text-muted">قیمت:
+                                {% if product.is_sale %}
+                                    <span class="text-danger">{{ product.sale_price|intcomma }}</span>
+                                {% else %}
+                                    {{ product.price|intcomma }}
+                                {% endif %}
+                            </small>
+                        </div>
+                        <div>
+                            <small class="text-muted">تعداد:
+                                {% for key, value in quantities.items %}
+                                    {% if key == product.id|slugify %}
+                                        <span class="badge bg-secondary">{{ value }}</span>
+                                    {% endif %}
+                                {% endfor %}
+                            </small>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <form method="POST" action="{% url 'process_order' %}">
-                            {% csrf_token %}
-                        نام و نام خانوادگی{{shipping_info.shipping_full_name}}<br>
-                        ایمیل: {{ shipping_info.shipping_email }}<br>
-                        آدرس:{{shipping_info.shipping_adress1}}<br>
-                        آدرس:{{shipping_info.shipping_adress2}}<br>
-                        شهر:{{shipping_info.shipping_city}}<br>
-                        منطقه:{{shipping_info.shipping_state}}<br>
-                        کشور:{{shipping_info.shipping_country}}<br>
+                    <hr class="my-2">
+                    {% endfor %}
+                    <div class="d-flex justify-content-between align-items-center mt-3">
+                        <strong>مجموع کل سفارشات:</strong>
+                        <span class="fs-5 fw-bold text-success">{{ total | intcomma }} <span class="fs-6">تومان</span></span>
                     </div>
                 </div>
             </div>
-            <br>
-            <button type="submit" class="btn btn-sm btn-outline-primary">ثبت سفارش و پرداخت</button>
-                        </form>
-        </center>
+
+            <div class="card shadow mb-4 border-0">
+                <div class="card-header bg-info text-white fw-bold">
+                    <i class="bi bi-truck me-2"></i>مشخصات ارسال
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'process_order' %}">
+                        {% csrf_token %}
+                        <ul class="list-group list-group-flush mb-3">
+                            <li class="list-group-item"><strong>نام و نام خانوادگی:</strong> {{ shipping_info.shipping_full_name }}</li>
+                            <li class="list-group-item"><strong>ایمیل:</strong> {{ shipping_info.shipping_email }}</li>
+                            <li class="list-group-item"><strong>آدرس ۱:</strong> {{ shipping_info.shipping_adress1 }}</li>
+                            <li class="list-group-item"><strong>آدرس ۲:</strong> {{ shipping_info.shipping_adress2 }}</li>
+                            <li class="list-group-item"><strong>شهر:</strong> {{ shipping_info.shipping_city }}</li>
+                            <li class="list-group-item"><strong>منطقه:</strong> {{ shipping_info.shipping_state }}</li>
+                            <li class="list-group-item"><strong>کشور:</strong> {{ shipping_info.shipping_country }}</li>
+                        </ul>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card-2-front me-2"></i>ثبت سفارش و پرداخت
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
+<style>
+.bg-primary {
+    background: linear-gradient(45deg, #667eea, #764ba2) !important;
+}
+.bg-info {
+    background: linear-gradient(45deg, #43cea2, #185a9d) !important;
+}
+.card {
+    border-radius: 18px;
+}
+.card-header {
+    border-radius: 18px 18px 0 0;
+    font-size: 1.2rem;
+}
+.btn-success {
+    background: linear-gradient(45deg, #43cea2, #185a9d);
+    border: none;
+    font-weight: 600;
+    border-radius: 12px;
+    transition: all 0.2s;
+}
+.btn-success:hover {
+    background: linear-gradient(45deg, #185a9d, #43cea2);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(67, 206, 162, 0.2);
+}
+</style>
 {% endblock %}

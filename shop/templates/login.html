@@ -1,38 +1,137 @@
 {% extends "base.html" %}
 
 {% block content %}
-        <!-- Header-->
-        <header class="bg-dark py-5">
-            <div class="container px-4 px-lg-5 my-5">
-                <div class="text-center text-white">
-                    <h1 class="display-4 fw-bolder">ثبت نام</h1>
-                    <p class="lead fw-normal text-white-50 mb-0"> </p>
-                </div>
-            </div>
-        </header>
-<br>
-<div class="container">
-    <div class=" row">
-        <center>
-            <div class="col-8">
-                <p align= justify>
+<section class="login-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 col-md-8">
+                <div class="login-card">
+                    <div class="text-center mb-4">
+                        <i class="bi bi-person-circle display-1 text-primary mb-3"></i>
+                        <h2 class="fw-bold text-dark">ورود به حساب کاربری</h2>
+                        <p class="text-muted">به موجاسمه خوش آمدید</p>
+                    </div>
+                    
                     <form method="POST" action="{% url 'login' %}">
                         {% csrf_token %}
-                        <div class="mb-3">
-                          <label for="text" class="form-label">username</label>
-                          <input type="text" class="form-control" name="username" ">
-                          <div id="emailHelp" class="form-text">.</div>
+                        
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control" id="username" name="username" placeholder="نام کاربری" required>
+                            <label for="username">
+                                <i class="bi bi-person me-2"></i>نام کاربری
+                            </label>
                         </div>
-                        <div class="mb-3">
-                          <label for="exampleInputPassword1" class="form-label">Password</label>
-                          <input type="password" class="form-control" name="password"">
+                        
+                        <div class="form-floating mb-4">
+                            <input type="password" class="form-control" id="password" name="password" placeholder="رمز عبور" required>
+                            <label for="password">
+                                <i class="bi bi-lock me-2"></i>رمز عبور
+                            </label>
                         </div>
-                       
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                      </form>
-                </p>
+                        
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-box-arrow-in-right me-2"></i>ورود
+                            </button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <p class="text-muted mb-0">حساب کاربری ندارید؟</p>
+                            <a href="{% url 'signup' %}" class="btn btn-link text-decoration-none">
+                                <i class="bi bi-person-plus me-1"></i>ثبت نام کنید
+                            </a>
+                        </div>
+                    </form>
+                </div>
             </div>
-        </center>
+        </div>
     </div>
-</div>
+</section>
+
+<style>
+    .login-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: calc(100vh - 80px);
+        display: flex;
+        align-items: center;
+    }
+    
+    .login-card {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 20px;
+        padding: 3rem;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .form-floating {
+        position: relative;
+    }
+    
+    .form-control {
+        border-radius: 10px;
+        border: 2px solid #e9ecef;
+        padding: 1rem 0.75rem;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: rgba(255, 255, 255, 0.9);
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        background: white;
+    }
+    
+    .form-floating > label {
+        padding: 1rem 0.75rem;
+        color: #6c757d;
+    }
+    
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        color: #667eea;
+        transform: scale(0.85) translateY(-0.5rem) translateX(0.15rem);
+    }
+    
+    .btn-primary {
+        background: linear-gradient(45deg, #667eea, #764ba2);
+        border: none;
+        border-radius: 10px;
+        font-weight: 600;
+        padding: 0.75rem 1.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-link {
+        color: #667eea;
+        font-weight: 600;
+        transition: color 0.3s ease;
+    }
+    
+    .btn-link:hover {
+        color: #764ba2;
+    }
+    
+    .display-1 {
+        font-size: 4rem;
+    }
+    
+    @media (max-width: 768px) {
+        .login-card {
+            padding: 2rem;
+            margin: 1rem;
+        }
+        
+        .display-1 {
+            font-size: 3rem;
+        }
+    }
+</style>
 {% endblock %}
